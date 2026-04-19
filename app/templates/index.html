@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Ranker</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div>
+        <p class="eyebrow">Photo Ranker</p>
+        <h1>批量筛片工作台</h1>
+        <p class="lead">按评分从高到低排序，自动隐藏模糊片，支持快速删除到回收站。</p>
+      </div>
+
+      <section class="panel">
+        <h2>扫描设置</h2>
+        <label>
+          <span>图片目录</span>
+          <div class="path-picker">
+            <input id="imageDir" type="text" placeholder="/path/to/photos" />
+            <button id="pickImageDirBtn" type="button">选择文件夹</button>
+          </div>
+        </label>
+        <label>
+          <span>回收站目录</span>
+          <div class="path-picker">
+            <input id="recycleBinDir" type="text" placeholder="/path/to/recycle-bin" />
+            <button id="pickRecycleBinDirBtn" type="button">选择文件夹</button>
+          </div>
+        </label>
+        <div class="grid-two">
+          <label>
+            <span>NIMA 模型</span>
+            <select id="modelName">
+              <option value="mobilenet">MobileNet</option>
+              <option value="inception">Inception</option>
+            </select>
+          </label>
+          <label>
+            <span>模糊阈值</span>
+            <input id="blurThreshold" type="number" min="0" step="1" />
+          </label>
+        </div>
+        <div class="grid-two">
+          <label>
+            <span>缩略图尺寸</span>
+            <input id="thumbSize" type="number" min="200" max="1600" step="20" />
+          </label>
+          <label>
+            <span>批大小</span>
+            <input id="scanBatchSize" type="number" min="1" max="128" step="1" />
+          </label>
+        </div>
+        <div class="button-row">
+          <button id="saveConfigBtn" class="primary">保存设置</button>
+          <button id="scanBtn">重新扫描</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>模型权重</h2>
+        <div id="modelInfo" class="stack muted"></div>
+        <div class="button-row">
+          <button id="downloadBtn">下载当前模型</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>快捷操作</h2>
+        <div class="stack compact muted">
+          <p><strong>空格</strong> 删除当前图到回收站</p>
+          <p><strong>← / →</strong> 上一张 / 下一张</p>
+          <p><strong>Esc</strong> 退出全屏查看</p>
+        </div>
+        <div class="button-row">
+          <select id="viewMode">
+            <option value="visible">正常视图</option>
+            <option value="blurry">模糊视图</option>
+            <option value="all">全部图片</option>
+          </select>
+          <select id="sortMode">
+            <option value="rank">按排名</option>
+            <option value="filename">按文件名</option>
+          </select>
+          <button id="openRecycleBinBtn" type="button">打开回收站</button>
+          <button id="emptyTrashBtn" class="danger">清空回收站</button>
+        </div>
+      </section>
+
+      <section class="panel muted">
+        <h2>运行状态</h2>
+        <div id="statusMeta" class="stack compact"></div>
+      </section>
+    </aside>
+
+    <main class="content">
+      <header class="content-head">
+        <div>
+          <p class="eyebrow">排序结果</p>
+          <h2 id="galleryTitle">等待扫描</h2>
+        </div>
+        <div id="summaryBar" class="summary-bar"></div>
+      </header>
+
+      <div id="feedback" class="feedback"></div>
+      <section id="gallery" class="gallery"></section>
+    </main>
+  </div>
+
+  <div id="viewer" class="viewer hidden" aria-hidden="true">
+    <button id="viewerClose" class="viewer-close">×</button>
+    <button id="viewerPrev" class="viewer-nav prev">‹</button>
+    <figure class="viewer-stage">
+      <img id="viewerImage" alt="当前查看图片" />
+      <figcaption id="viewerCaption"></figcaption>
+    </figure>
+    <button id="viewerNext" class="viewer-nav next">›</button>
+  </div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
